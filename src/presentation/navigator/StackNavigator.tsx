@@ -1,6 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import { HomeScreen } from '../screens/HomeScreen';
-import { ProfileScreen } from '../screens/ProfileScreen';
+
+import { Menu } from '../screens/Menu';
+import { DetallePlatillo } from '../screens/DetallePlatillo';
 
 
 export type RootStackParams={
@@ -13,8 +14,8 @@ const Stack = createStackNavigator();
  export const StackNavigator=()=> {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="Profile" component={ProfileScreen} />
+      <Stack.Screen name="Menu" component={Menu} />
+      <Stack.Screen name="Detalle" component={DetallePlatillo} />
     </Stack.Navigator>
   );
 }
