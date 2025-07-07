@@ -11,7 +11,7 @@ export const Menu = () => {
   return (
     <CustomView margin>
     
-          <Title text="Home" safe white/>
+          <Title text="Menu" safe />
           <Text>HomeScreen</Text>
           <Card>
           <Icons name="shirt-outline" size={25} color='red'/>
