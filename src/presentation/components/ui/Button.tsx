@@ -1,7 +1,7 @@
 import React from 'react'
 import { Pressable, StyleProp, ViewStyle } from 'react-native';
 import { View, Text } from 'react-native'
-import { colors, globalStyles } from '../../config/theme/theme';
+import { colors, globalStyles } from '../../../config/theme/theme';
 
 interface Props {
   text: string;

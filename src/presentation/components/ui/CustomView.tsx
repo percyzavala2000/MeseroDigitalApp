@@ -1,7 +1,8 @@
 import React from 'react'
 import { ViewStyle } from 'react-native';
-import { View, Text, StyleProp } from 'react-native'
-import { globalStyles } from '../../config/theme/theme';
+import { View,  StyleProp } from 'react-native'
+import { globalStyles } from '../../../config/theme/theme';
+
 
 interface Props {
   style?: StyleProp<ViewStyle>;

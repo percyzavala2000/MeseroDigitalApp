@@ -1,7 +1,8 @@
 import { PropsWithChildren } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
 import { View, Text } from 'react-native';
-import { colors } from '../../config/theme/theme';
+import { colors } from '../../../config/theme/theme';
+
 
 interface Props extends PropsWithChildren {
   style?: StyleProp<ViewStyle>;
