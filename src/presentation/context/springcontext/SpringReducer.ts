@@ -1,23 +1,30 @@
+import { Menu } from '../../../domain/entities/Menu';
 
 
-interface SpringReducerState {
-
+export interface SpringReducerState {
+  menu: Menu[];
 }
 
-const initialState: SpringReducerState = {
-
-}
+export const initialState: SpringReducerState = {
+  menu: [],
+};
 
 interface ActionProps {
-  type: string;
-  payload: any;
+  type: 'SET_MENU';
+  payload: Menu[];
 }
-export const springReducer= (state = initialState, { type, payload }: ActionProps): SpringReducerState => {
+export const springReducer = (
+  state: SpringReducerState = initialState,
+  { type, payload }: ActionProps
+): SpringReducerState => {
   switch (type) {
-
-   
+    case 'SET_MENU':
+      return {
+        ...state,
+        menu: payload,
+      };
 
     default:
-      return state
+      return state;
   }
-}
+};
