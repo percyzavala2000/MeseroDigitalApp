@@ -1,0 +1,12 @@
+
+
+export type MeseroDBMenuResponse = MeseroDBMenuItem[];
+export interface MeseroDBMenuItem {
+  id: number;
+  nombre: string;
+  descripcion: string;
+  precio: number;
+  stock: number;
+  imagen: null | string;
+  estado: string;
+}

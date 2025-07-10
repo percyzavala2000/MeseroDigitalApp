@@ -3,6 +3,7 @@ import { View, Text } from 'react-native'
 import { SpringContext } from './SpringContext';
 import { springReducer } from './SpringReducer';
 
+
 type SpringProviderProps = {
   children?: React.ReactNode;
 }
@@ -19,7 +20,7 @@ export const SpringProvider = ({children}:SpringProviderProps) => {
 
 // render
   return (
-    <SpringContext.Provider value={{menu:state.menu}} >
+    <SpringContext.Provider value={{menu:state}} >
       {children}
     </SpringContext.Provider>
   )
