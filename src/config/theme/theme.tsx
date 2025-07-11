@@ -48,4 +48,9 @@ export const globalStyles = StyleSheet.create({
     color: colors.text,
     fontSize: 16,
   },
+  /* desde aqui escanear qr */
+  contenido:{
+  marginHorizontal:'2.5%' ,
+  flex:1 
+  }
 });

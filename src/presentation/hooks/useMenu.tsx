@@ -5,7 +5,7 @@ import { meseroDBFetcher } from '../../config/api/meseroDB.adapter';
 
 export const useMenu = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [menu, setMenu] = useState<Menu[]>();
+  const [menu, setMenu] = useState<Menu[]>([]);
 
   useEffect(() => {
     loadMenu();

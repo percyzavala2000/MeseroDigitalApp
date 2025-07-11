@@ -12,7 +12,7 @@ export const SpringProvider = ({ children }: SpringProviderProps) => {
 
   const {isLoading,menu}  = useMenu(); // Custom hook to fetch menu data
   const initialState = {
-    menu: [],
+    menu
   };
 
   const [state, dispatch] = useReducer(springReducer, initialState);

@@ -1,34 +1,43 @@
-import React, { useEffect, useState } from 'react'
-import { View, Text, FlatList, ActivityIndicator } from 'react-native'
-import { menuGetUseCase } from '../../domain/use-cases/menu/get-menu.use-case';
-import { meseroDBFetcher } from '../../config/api/meseroDB.adapter';
-import { Menu } from '../../domain/entities/Menu';
+import React from 'react';
+import {
+  View,
+  ActivityIndicator,
+  StyleSheet,
+} from 'react-native';
 import { useMenu } from '../hooks/useMenu';
+import { CustomView } from '../components/ui/CustomView';
+import { Button } from '../components/ui/Button';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+
+import { RootStackParams } from '../navigator/StackNavigator';
+
+
 
 export const NuevaOrden = () => {
- 
-   
- 
+  const navigation = useNavigation<NavigationProp<RootStackParams>>();
 
-  
-// render
- const { isLoading, menu } = useMenu();
+  // render
+  const { isLoading, menu } = useMenu();
+
 
   if (isLoading) return <ActivityIndicator size="large" color="#0000ff" />;
 
   return (
-    <View>
-      <FlatList
-        data={menu}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <View style={{ padding: 10 }}>
-            <Text style={{ fontWeight: 'bold' }}>{item.nombre}</Text>
-            <Text>{item.descripcion}</Text>
-            <Text>S/. {item.precio}</Text>
-          </View>
-        )}
-      />
-    </View>
+    <CustomView margin>
+      <View style={styles.contenido}>
+        <Button
+          text="Escanear Codigo QR"
+          onPress={() => navigation.navigate('Menu')}
+        />
+      </View>
+    </CustomView>
   );
 };
+
+const styles = StyleSheet.create({
+  contenido: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
+});
