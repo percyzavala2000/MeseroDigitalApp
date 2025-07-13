@@ -26,7 +26,7 @@ export const SpringProvider = ({ children }: SpringProviderProps) => {
 
   // render
   return (
-    <SpringContext.Provider value={{ menu: state }}>
+    <SpringContext.Provider value={ state }>
       {children}
     </SpringContext.Provider>
   );

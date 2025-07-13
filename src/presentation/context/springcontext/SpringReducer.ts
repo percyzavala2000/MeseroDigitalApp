@@ -25,6 +25,6 @@ export const springReducer = (
       };
 
     default:
-      return state;
+      return state.menu.length > 0 ? state : initialState;
   }
 };

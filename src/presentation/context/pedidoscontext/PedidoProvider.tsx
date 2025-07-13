@@ -1,9 +1,8 @@
-import React, { useEffect, useReducer } from 'react';
-import { View, Text } from 'react-native';
-
-import { useMenu } from '../../hooks/useMenu';
+import React, { useReducer } from 'react';
 import { PedidosContext } from './PedidosContext';
-import { PedidosReducer } from './PedidoReducer';
+import { PedidosReducer, initialState } from './PedidoReducer';
+import { Menu } from '../../../domain/entities/Menu';
+
 
 type PedidosProviderProps = {
   children?: React.ReactNode;
@@ -11,18 +10,35 @@ type PedidosProviderProps = {
 
 export const PedidosProvider = ({ children }: PedidosProviderProps) => {
 
-  const initialState = {
-    pedido: [],
+  const [state, dispatch] = useReducer(PedidosReducer, initialState);
+
+  // Selecciona el producto que el usuario quiere ordenar
+  const seleccionarPlatillo = (platillo: Menu) => {
+    dispatch({
+      type: 'SELECCIONAR_PLATILLO',
+      payload: platillo,
+    });
+    console.log('Seleccionando platillo:', platillo);
   };
 
-  const [state, dispatch] = useReducer(PedidosReducer, initialState);
-  
+  //CUANDO UN USUARIO CONFIRMA UN PEDIDO
+  const guardarPedido = (pedido: any) => {
+    dispatch({
+      type: 'CONFIRMAR_ORDENAR_PLATILLO',
+      payload: pedido,
+    });
+    console.log('Pedido guardado:', pedido);
+  };
 
-  console.log('SpringProvider - Initial State:', state);
-
-  // render
   return (
-    <PedidosContext.Provider value={{ pedido: state }}>
+    <PedidosContext.Provider
+      value={{
+        pedido: state.pedido,
+        platillo: state.platillo,
+        seleccionarPlatillo,
+        guardarPedido,
+      }}
+    >
       {children}
     </PedidosContext.Provider>
   );

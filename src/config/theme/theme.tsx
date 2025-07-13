@@ -52,5 +52,12 @@ export const globalStyles = StyleSheet.create({
   contenido:{
   marginHorizontal:'2.5%' ,
   flex:1 
+  },
+
+  contenedor:{
+    flex: 1,
+    backgroundColor: colors.background,
+    padding: 20,
+
   }
 });

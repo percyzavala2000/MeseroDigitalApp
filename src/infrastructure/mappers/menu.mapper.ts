@@ -11,6 +11,7 @@ export class MenuMapper {
       stock: menuData.stock,
       imagen: menuData.imagen || null,
       estado: menuData.estado,
+      categoria: menuData.categoria 
     };
   }
 

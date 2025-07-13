@@ -1,24 +1,107 @@
 import React, { useContext } from 'react';
-import { View, Text } from 'react-native';
-import Card from '../components/ui/Card';
-import { CustomView } from '../components/ui/CustomView';
-import { Icons } from '../components/ui/Icons';
-import { Button } from '../components/ui/Button';
-import { Title } from '../components/ui/Title';
+import { View, Image, SectionList, StyleSheet } from 'react-native';
+import { Text, Card, Divider } from 'react-native-paper';
 import { SpringContext } from '../context/springcontext/SpringContext';
+import { PedidosContext } from '../context/pedidoscontext/PedidosContext';
+import { RootStackParams } from '../navigator/StackNavigator';
+import { StackScreenProps } from '@react-navigation/stack';
 
-export const Menu = () => {
+interface Props extends StackScreenProps<RootStackParams,'Menu'> {}
+
+export const Menu = ({navigation}:Props) => {
   const { menu } = useContext(SpringContext);
-  console.log('Menu - Context:', menu);
-  // render
+  const { seleccionarPlatillo } = useContext(PedidosContext);
+  
+
+  // Agrupar por categoría
+  const menuPorCategoria = menu.reduce((acc: any, item: any) => {
+    const categoriaNombre = item.categoria?.nombre ?? 'Sin categoría';
+
+    const existe = acc.find((sec: any) => sec.title === categoriaNombre);
+    if (existe) {
+      existe.data.push(item);
+    } else {
+      acc.push({
+        title: categoriaNombre,
+        data: [item],
+      });
+    }
+    return acc;
+  }, []);
+
   return (
-    <CustomView margin>
-      <Title safe text="Desde titulo" />
-      <Text>HomeScreen</Text>
-      <Card>
-        <Icons name="shirt-outline" size={25} color="red" />
-        <Button onPress={() => {}} text="enviar" />
-      </Card>
-    </CustomView>
+    <SectionList
+      sections={menuPorCategoria}
+      keyExtractor={item => item.id.toString()}
+      renderSectionHeader={({ section: { title } }) => (
+        <View style={styles.separator}>
+          <Text style={styles.separatorTexto}>{title}</Text>
+        </View>
+      )}
+      renderItem={({ item }) => (
+        <Card
+          style={styles.card}
+          onPress={() => {
+            
+            seleccionarPlatillo(item);
+            navigation.navigate('DetallePlatillo', { id: item.id });
+            
+          }}
+        >
+          <View style={styles.cardContent}>
+            <Image
+              source={{
+                uri: `http://192.168.18.9:8080/uploads/${item.imagen}`,
+              }}
+              style={styles.image}
+            />
+            <View style={styles.textContent}>
+              <Text variant="titleMedium">{item.nombre}</Text>
+              <Text variant="bodyMedium" numberOfLines={2}>
+                {item.descripcion}
+              </Text>
+              <Text style={styles.price}>S/. {item.precio.toFixed(2)}</Text>
+            </View>
+          </View>
+        </Card>
+      )}
+      ItemSeparatorComponent={() => <Divider />}
+    />
   );
 };
+
+const styles = StyleSheet.create({
+  separator: {
+    backgroundColor: '#000',
+    padding: 8,
+  },
+  separatorTexto: {
+    fontWeight: 'bold',
+    color: '#ffda00',
+    textTransform: 'uppercase',
+  },
+  card: {
+    marginHorizontal: 12,
+    marginVertical: 6,
+    elevation: 2,
+  },
+  cardContent: {
+    flexDirection: 'row',
+    padding: 12,
+  },
+  image: {
+    width: 80,
+    height: 80,
+    borderRadius: 6,
+    marginRight: 12,
+  },
+  textContent: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  price: {
+    marginTop: 4,
+    fontWeight: 'bold',
+    color: '#00796B',
+  },
+});

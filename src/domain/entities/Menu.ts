@@ -7,5 +7,6 @@ export interface Menu {
   stock:       number;
   imagen:      null | string;
   estado:      string;
+  categoria:   string;
 }
 

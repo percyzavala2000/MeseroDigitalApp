@@ -16,9 +16,9 @@ export type RootStackParams = {
   ProgresoPedido: undefined;
 };
 
-const Stack = createStackNavigator<RootStackParams>();
 
 export const StackNavigator = () => {
+  const Stack = createStackNavigator<RootStackParams>();
   return (
     <Stack.Navigator
       screenOptions={{

@@ -9,4 +9,5 @@ export interface MeseroDBMenuItem {
   stock: number;
   imagen: null | string;
   estado: string;
+  categoria: string;
 }
