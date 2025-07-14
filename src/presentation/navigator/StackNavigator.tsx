@@ -4,8 +4,9 @@ import { Menu } from '../screens/Menu';
 import { DetallePlatillo } from '../screens/DetallePlatillo';
 import { NuevaOrden } from '../screens/NuevaOrden';
 import { FormularioPlatillo } from '../screens/FormularioPlatillo';
-import { ResumenPedido } from '../screens/ResumenPedido';
+
 import { ProgresoPedido } from '../screens/ProgresoPedido';
+import ResumenPedido from '../screens/ResumenPedido';
 
 export type RootStackParams = {
   Menu: undefined;

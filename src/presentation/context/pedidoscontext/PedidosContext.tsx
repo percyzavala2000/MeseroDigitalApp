@@ -1,13 +1,21 @@
 
 import { createContext } from 'react';
 import { Menu } from '../../../domain/entities/Menu';
+import { DetallePedido } from '../../../infrastructure/interfaces/menu-db.response';
+
 
 
 interface PedidosContextProps {
-  pedido: Menu[];
+  pedido: DetallePedido[];
   platillo: Menu | null;
-  seleccionarPlatillo: (platillo: Menu) => void;
+  idPedido: string;
+  seleccionarPlatillo: (platillo: any) => void;
   guardarPedido: (pedido: any) => void;
+  // Agrega las funciones que necesitas en el contexto
+  eliminarProducto: (id: string) => void;
+  mostrarResumen: (total: number) => void;
+  pedidoRealizado: (id: string) => void;
+  total: number;
 }
 
 export const PedidosContext = createContext<PedidosContextProps>({
@@ -15,4 +23,10 @@ export const PedidosContext = createContext<PedidosContextProps>({
   platillo: null,
   seleccionarPlatillo: () => {},
   guardarPedido: () => {},
+  eliminarProducto: () => {},
+  mostrarResumen: () => {},
+  pedidoRealizado: () => {},
+  total: 0,
+  idPedido: '',
+
 });

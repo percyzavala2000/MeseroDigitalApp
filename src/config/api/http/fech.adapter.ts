@@ -30,13 +30,39 @@ export class FetchAdapter extends HttpAdapter {
       throw new Error(`error fetching get:${url} ${error}`);
     }
   }
-  post<T>(
-    url: string,
-    data?: Record<string, unknown>,
-    params?: Record<string, any>,
-  ): Promise<T> {
-    throw new Error('Method not implemented.');
+  async post<T>(
+  url: string,
+  data?: Record<string, unknown>,
+  params?: Record<string, any>,
+): Promise<T> {
+  const fullUrl = new URL(url, this.baseURL);
+
+  if (params) {
+    Object.entries(params).forEach(([key, value]) =>
+      fullUrl.searchParams.append(key, String(value))
+    );
   }
+
+  try {
+    const response = await fetch(fullUrl.toString(), {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      throw new Error(`POST ${url} failed with status ${response.status}`);
+    }
+
+    const responseData = await response.json();
+    return responseData as T;
+  } catch (error) {
+    throw new Error(`Error en POST ${url}: ${error}`);
+  }
+}
+
   put<T>(
     url: string,
     data?: Record<string, unknown>,
