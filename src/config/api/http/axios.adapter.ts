@@ -34,5 +34,23 @@ export class AxiosAdapter extends HttpAdapter {
     }
   }
 }
+  async post<T>(
+    url: string,
+    data?: Record<string, unknown>,
+    params?: Record<string, any>,
+  ): Promise<T> {
+    try {
+      const resp = await this.axiosInstance.post<T>(url, data, { params });
+      return resp.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error('Error en la solicitud Axios:', error.message, error.response);
+        throw error; // Relanzar el error original
+      } else {
+        console.error('Error inesperado:', error);
+        throw error; // Relanzar el error original
+      }
+    }
+  }
   
 }

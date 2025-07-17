@@ -6,15 +6,16 @@ import { PedidosContext } from '../context/pedidoscontext/PedidosContext';
 import { RootStackParams } from '../navigator/StackNavigator';
 import { StackScreenProps } from '@react-navigation/stack';
 
-interface Props extends StackScreenProps<RootStackParams,'Menu'> {}
+interface Props extends StackScreenProps<RootStackParams, 'Menu'> {}
 
-export const Menu = ({navigation}:Props) => {
+export const Menu = ({ navigation }: Props) => {
   const { menu } = useContext(SpringContext);
   const { seleccionarPlatillo } = useContext(PedidosContext);
-  
 
   // Agrupar por categoría
-  const menuPorCategoria = menu.reduce((acc: any, item: any) => {
+  const menuFiltrado = menu.filter((item: any) => item.estado === 'DISPONIBLE');
+
+  const menuPorCategoria = menuFiltrado.reduce((acc: any, item: any) => {
     const categoriaNombre = item.categoria?.nombre ?? 'Sin categoría';
 
     const existe = acc.find((sec: any) => sec.title === categoriaNombre);
@@ -32,7 +33,9 @@ export const Menu = ({navigation}:Props) => {
   return (
     <SectionList
       sections={menuPorCategoria}
-      keyExtractor={item => item.id.toString()}
+      keyExtractor={(item, index) =>
+        item.id ? item.id.toString() : `item-${index}`
+      }
       renderSectionHeader={({ section: { title } }) => (
         <View style={styles.separator}>
           <Text style={styles.separatorTexto}>{title}</Text>
@@ -42,10 +45,8 @@ export const Menu = ({navigation}:Props) => {
         <Card
           style={styles.card}
           onPress={() => {
-            
             seleccionarPlatillo(item);
             navigation.navigate('DetallePlatillo', { id: item.id });
-            
           }}
         >
           <View style={styles.cardContent}>

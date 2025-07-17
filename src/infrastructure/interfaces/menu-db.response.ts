@@ -17,6 +17,8 @@ export interface PedidoCreadoResponse {
   fecha: string;
   estado: string;
   idCliente: number;
+  tiempoEntrega?: number;
+  completado?: boolean; // ✅ AÑADIR ESTO
   detalles: DetallePedidoResponse[];
 }
 
@@ -34,4 +36,16 @@ export interface DetallePedido {
   cantidad: number;
   precioUnitario: number;
   total: number;
+}
+
+export interface PedidoRequest {
+  idCliente: number;
+  numMesa: number;
+  fecha: string; // ISO format
+  estado: string;
+  detalles: {
+    idProducto: number;
+    cantidad: number;
+    precioUnitario: number;
+  }[];
 }

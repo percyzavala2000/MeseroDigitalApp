@@ -12,13 +12,12 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParams } from '../navigator/StackNavigator';
 import { PedidosContext } from '../context/pedidoscontext/PedidosContext';
 import { meseroDBFetcher } from '../../config/api/meseroDB.adapter';
-import { PedidoCreadoResponse } from '../../infrastructure/interfaces/menu-db.response';
+import { PedidoCreadoResponse, PedidoRequest } from '../../infrastructure/interfaces/menu-db.response';
 
 interface Props extends StackScreenProps<RootStackParams, 'ResumenPedido'> {}
 
- const ResumenPedido = ({ navigation }: Props) => {
+const ResumenPedido = ({ navigation }: Props) => {
   const { colors } = useTheme();
-
   const { pedido, total, mostrarResumen, eliminarProducto, pedidoRealizado } =
     useContext(PedidosContext);
 
@@ -27,10 +26,11 @@ interface Props extends StackScreenProps<RootStackParams, 'ResumenPedido'> {}
   }, [pedido]);
 
   const calcularTotal = () => {
-    const nuevoTotal = pedido.reduce(
-      (acc: number, item: any) => acc + item.precio * item.cantidad,
-      0,
-    );
+   const nuevoTotal = pedido.reduce(
+  (acc: number, item) => acc + item.total * item.cantidad,
+  0,
+);
+
     mostrarResumen(nuevoTotal);
   };
 
@@ -43,8 +43,10 @@ interface Props extends StackScreenProps<RootStackParams, 'ResumenPedido'> {}
           text: 'Confirmar',
           onPress: async () => {
             try {
-              const pedidoDTO = {
-                idCliente: 1, // o el ID real
+              const pedidoDTO: PedidoRequest = {
+                idCliente: 1, // puedes hacerlo dinámico si tienes el contexto de usuario
+                numMesa: 1, // lo mismo aquí
+                fecha: new Date().toISOString(), // o un formato manual si deseas
                 estado: 'PENDIENTE',
                 detalles: pedido.map(item => ({
                   idProducto: item.id,
@@ -57,6 +59,7 @@ interface Props extends StackScreenProps<RootStackParams, 'ResumenPedido'> {}
                 '/pedidos',
                 pedidoDTO,
               );
+
               pedidoRealizado(response.id);
               navigation.navigate('ProgresoPedido');
             } catch (error) {
@@ -84,14 +87,20 @@ interface Props extends StackScreenProps<RootStackParams, 'ResumenPedido'> {}
     );
   };
 
-  const renderItem = ({ item }: any) => (
+  const renderItem = ({ item }: { item: any }) => (
     <Card style={styles.card}>
       <Card.Title
         title={item.nombre}
         subtitle={`Cantidad: ${item.cantidad}`}
         left={props =>
           item.imagen ? (
-            <Avatar.Image {...props} source={{ uri: `http://192.168.18.9:8080/uploads/${item.imagen}` }} size={56} />
+            <Avatar.Image
+              {...props}
+              source={{
+                uri: `http://192.168.18.9:8080/uploads/${item.imagen}`,
+              }}
+              size={56}
+            />
           ) : (
             <Avatar.Icon {...props} icon="image-off" size={56} />
           )
@@ -119,10 +128,9 @@ interface Props extends StackScreenProps<RootStackParams, 'ResumenPedido'> {}
 
       <FlatList
         data={pedido}
-        keyExtractor={(item, index) => {
-    console.log('Item:', item);
-    return item.id ? item.id.toString() : index.toString();
-  }}
+        keyExtractor={(item, index) =>
+        item.id ? item.id.toString() : `item-${index}`
+      }
         renderItem={renderItem}
         contentContainerStyle={{ paddingBottom: 20 }}
       />

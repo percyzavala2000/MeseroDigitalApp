@@ -3,6 +3,7 @@ import { HttpAdapter } from './http.adapter';
 
 interface Options {  
   baseURL: string;
+  data?:any
   params?: Record<string, string>;
 };
 
@@ -30,9 +31,9 @@ export class FetchAdapter extends HttpAdapter {
       throw new Error(`error fetching get:${url} ${error}`);
     }
   }
-  async post<T>(
+  async post<T,B=any>(
   url: string,
-  data?: Record<string, unknown>,
+  data?: any,
   params?: Record<string, any>,
 ): Promise<T> {
   const fullUrl = new URL(url, this.baseURL);
