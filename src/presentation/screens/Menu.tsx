@@ -5,19 +5,31 @@ import { SpringContext } from '../context/springcontext/SpringContext';
 import { PedidosContext } from '../context/pedidoscontext/PedidosContext';
 import { RootStackParams } from '../navigator/StackNavigator';
 import { StackScreenProps } from '@react-navigation/stack';
+import useWebSocket from '../hooks/useWebSocket';
+
+
 
 interface Props extends StackScreenProps<RootStackParams, 'Menu'> {}
 
 export const Menu = ({ navigation }: Props) => {
-  const { menu } = useContext(SpringContext);
+  const { menu, dispatch } = useContext(SpringContext);
   const { seleccionarPlatillo } = useContext(PedidosContext);
 
-  // Agrupar por categoría
+  // WebSocket para actualizar productos en tiempo real
+  useWebSocket(
+  (productoActualizado) => {
+    console.log('🆕 Producto actualizado recibido:', productoActualizado);
+    dispatch({ type: 'UPDATE_PRODUCTO', payload: productoActualizado });
+  }
+  // puedes omitir el segundo parámetro si no lo usas
+);
+
+
+
   const menuFiltrado = menu.filter((item: any) => item.estado === 'DISPONIBLE');
 
   const menuPorCategoria = menuFiltrado.reduce((acc: any, item: any) => {
     const categoriaNombre = item.categoria?.nombre ?? 'Sin categoría';
-
     const existe = acc.find((sec: any) => sec.title === categoriaNombre);
     if (existe) {
       existe.data.push(item);

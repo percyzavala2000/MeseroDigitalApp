@@ -7,6 +7,7 @@ import { PedidosProvider } from './src/presentation/context/pedidoscontext/Pedid
 import { PaperProvider } from 'react-native-paper';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
+
 export const App = () => {
   // render
   return (

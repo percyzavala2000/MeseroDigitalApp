@@ -88,7 +88,7 @@ const ResumenPedido = ({ navigation }: Props) => {
   };
 
   const renderItem = ({ item }: { item: any }) => (
-    <Card style={styles.card}>
+    <Card style={styles.card} >
       <Card.Title
         title={item.nombre}
         subtitle={`Cantidad: ${item.cantidad}`}

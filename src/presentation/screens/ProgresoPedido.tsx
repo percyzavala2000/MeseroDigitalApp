@@ -57,8 +57,8 @@ export const ProgresoPedido = ({ navigation }: Props) => {
   );
 
   return (
-    <View style={styles.container}>
-      <Card style={{ padding: 20 }}>
+    <View style={styles.container}  >
+      <Card style={{ padding: 20 }} > 
         {estadoPedido === 'PENDIENTE' && (
           <>
             <Title style={styles.textCenter}>Hemos recibido tu orden</Title>
@@ -69,7 +69,7 @@ export const ProgresoPedido = ({ navigation }: Props) => {
         {estadoPedido === 'PREPARANDO' && fechaFin && (
           <>
             <Text style={styles.textCenter}>Tu orden estará lista en:</Text>
-            <Countdown date={fechaFin} renderer={renderer} />
+            <Countdown date={fechaFin} renderer={renderer} key={idPedido} />
           </>
         )}
 
