@@ -11,7 +11,7 @@ import {
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParams } from '../navigator/StackNavigator';
 import { PedidosContext } from '../context/pedidoscontext/PedidosContext';
-import { meseroDBFetcher } from '../../config/api/meseroDB.adapter';
+import { BASE_URL, meseroDBFetcher } from '../../config/api/meseroDB.adapter';
 import { PedidoCreadoResponse, PedidoRequest } from '../../infrastructure/interfaces/menu-db.response';
 
 interface Props extends StackScreenProps<RootStackParams, 'ResumenPedido'> {}
@@ -97,7 +97,7 @@ const ResumenPedido = ({ navigation }: Props) => {
             <Avatar.Image
               {...props}
               source={{
-                uri: `http://192.168.18.9:8080/uploads/${item.imagen}`,
+                uri: `${BASE_URL}/uploads/${item.imagen}`,
               }}
               size={56}
             />

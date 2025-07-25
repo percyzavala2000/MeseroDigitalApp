@@ -4,6 +4,7 @@ import { Menu } from '../../domain/entities/Menu';
 import { springReducer } from '../context/springcontext/SpringReducer';
 import { useMenu } from './useMenu';
 import { w3cwebsocket as W3CWebSocket } from 'websocket';
+import { BASE_URL } from '../../config/api/meseroDB.adapter';
 
 // @ts-ignore: Parche necesario para que STOMP funcione en React Native
 global.WebSocket = W3CWebSocket;
@@ -21,23 +22,23 @@ export default function useWebSocket(
 
   useEffect(() => {
     const client = new Client({
-      webSocketFactory:()=> new W3CWebSocket('http://localhost:8080/ws/websocket'),
+      webSocketFactory:()=> new W3CWebSocket(`${BASE_URL}/ws/websocket`),
       reconnectDelay: 5000,
       debug: str => console.log('[WebSocket Debug]', str),
       onConnect: () => {
-        console.log('✅ Conectado al WebSocket');
+        console.log(' Conectado al WebSocket');
 
         // Suscribirse a cambios de productos
         client.subscribe('/topic/productos', (message: IMessage) => {
           try {
             const productosActualizados: Menu[] = JSON.parse(message.body);
-            console.log('🆕 Productos recibidos:', productosActualizados);
+            console.log(' Productos recibidos:', productosActualizados);
             dispatch({ type: 'SET_MENU', payload: productosActualizados });
 
             // Notificar si quieres hacer algo extra por cada cambio
             productosActualizados.forEach(onProductoChange);
           } catch (err) {
-            console.error('❌ Error al parsear productos', err);
+            console.error(' Error al parsear productos', err);
           }
         });
 
@@ -48,13 +49,13 @@ export default function useWebSocket(
               const pedidoActualizado = JSON.parse(message.body);
               onPedidoChange(pedidoActualizado);
             } catch (err) {
-              console.error('❌ Error al parsear pedido', err);
+              console.error(' Error al parsear pedido', err);
             }
           });
         }
       },
       onStompError: frame => {
-        console.error('❌ STOMP error', frame.headers['message']);
+        console.error('STOMP error', frame.headers['message']);
         console.error('Detalles:', frame.body);
       },
     });

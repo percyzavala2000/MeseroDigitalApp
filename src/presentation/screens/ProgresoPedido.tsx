@@ -1,10 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text, Button, Card, Title, useTheme } from 'react-native-paper';
 import Countdown from 'react-countdown';
 import { PedidosContext } from '../context/pedidoscontext/PedidosContext';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParams } from '../navigator/StackNavigator';
+import { obtenerPedidoUseCase } from '../../domain/use-cases/pedido/obtener-pedido.use-case';
+import { meseroDBFetcher } from '../../config/api/meseroDB.adapter';
 
 interface Props extends StackScreenProps<RootStackParams, 'ProgresoPedido'> {}
 
@@ -19,10 +21,12 @@ export const ProgresoPedido = ({ navigation }: Props) => {
 
     const obtenerPedido = async () => {
       try {
-        const response = await fetch(`http://192.168.18.9:8080/api/pedidos/${idPedido}`);
+        /* const response = await fetch(`http://192.168.18.9:8080/api/pedidos/${idPedido}`);
         if (!response.ok) throw new Error(`Error al obtener el pedido ${idPedido}`);
 
-        const data = await response.json();
+        const data = await response.json(); */
+        const data:any = await obtenerPedidoUseCase(meseroDBFetcher, idPedido);
+
         console.log('Pedido recibido:', data);
 
         setEstadoPedido(data.estado ?? '');
@@ -67,14 +71,14 @@ export const ProgresoPedido = ({ navigation }: Props) => {
         )}
 
         {estadoPedido === 'PREPARANDO' && fechaFin && (
-          <>
+          <Fragment >
             <Text style={styles.textCenter}>Tu orden estará lista en:</Text>
-            <Countdown date={fechaFin} renderer={renderer} key={idPedido} />
-          </>
+            <Countdown date={fechaFin} renderer={renderer}  />
+          </Fragment>
         )}
 
         {estadoPedido === 'LISTO' && (
-          <>
+          <Fragment>
             <Title style={styles.completado}>Orden Lista</Title>
             <Text style={styles.completado}>Por favor, pase a recoger su pedido</Text>
             <Button
@@ -84,7 +88,7 @@ export const ProgresoPedido = ({ navigation }: Props) => {
             >
               Comenzar una nueva orden
             </Button>
-          </>
+          </Fragment>
         )}
       </Card>
     </View>

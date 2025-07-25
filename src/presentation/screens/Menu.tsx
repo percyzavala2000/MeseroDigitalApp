@@ -6,6 +6,7 @@ import { PedidosContext } from '../context/pedidoscontext/PedidosContext';
 import { RootStackParams } from '../navigator/StackNavigator';
 import { StackScreenProps } from '@react-navigation/stack';
 import useWebSocket from '../hooks/useWebSocket';
+import { BASE_URL } from '../../config/api/meseroDB.adapter';
 
 
 
@@ -18,7 +19,7 @@ export const Menu = ({ navigation }: Props) => {
   // WebSocket para actualizar productos en tiempo real
   useWebSocket(
   (productoActualizado) => {
-    console.log('🆕 Producto actualizado recibido:', productoActualizado);
+    console.log('Producto actualizado recibido:', productoActualizado);
     dispatch({ type: 'UPDATE_PRODUCTO', payload: productoActualizado });
   }
   // puedes omitir el segundo parámetro si no lo usas
@@ -64,7 +65,7 @@ export const Menu = ({ navigation }: Props) => {
           <View style={styles.cardContent}>
             <Image
               source={{
-                uri: `http://192.168.18.9:8080/uploads/${item.imagen}`,
+                uri: `${BASE_URL}/uploads/${item.imagen}`,
               }}
               style={styles.image}
             />

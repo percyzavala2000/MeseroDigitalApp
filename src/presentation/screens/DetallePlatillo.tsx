@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { PedidosContext } from '../context/pedidoscontext/PedidosContext';
 import { RootStackParams } from '../navigator/StackNavigator';
 import { StackScreenProps } from '@react-navigation/stack';
+import { BASE_URL } from '../../config/api/meseroDB.adapter';
  // Asegúrate que el nombre del contexto sea correcto
 interface Props extends StackScreenProps<RootStackParams,'DetallePlatillo'> {}
 
@@ -24,7 +25,7 @@ export const DetallePlatillo = ({navigation}:Props) => {
 
       <Card style={styles.card}>
         <Card.Content>
-          <Image source={{ uri: `http://192.168.18.9:8080/uploads/${imagen}` }} style={styles.image} />
+          <Image source={{ uri: `${BASE_URL}/uploads/${imagen}` }} style={styles.image} />
           <Text style={styles.description}>{descripcion}</Text>
           <Text style={styles.price}>Precio: S/ {precio.toFixed(2)}</Text>
         </Card.Content>
